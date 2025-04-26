@@ -77,7 +77,6 @@ const Card: React.FC<CardProps> = ({
                     onChange={(e) => updateCardValue(id, Number(e.target.value))}
                     className="card-input"
                 />
-                /
                 <input
                     type="number"
                     min={0}

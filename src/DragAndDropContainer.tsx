@@ -43,7 +43,36 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({ initialCard
         const sortedCards = [...cards].sort((a, b) => b.initiative - a.initiative);
         setCards(sortedCards);
     };
+    const moveCard = (draggedId: number, targetId: number) => {
+        const draggedIndex = cards.findIndex((card: { id: number; }) => card.id === draggedId);
+        const targetIndex = cards.findIndex((card: { id: number; }) => card.id === targetId);
 
+        const updatedCards = [...cards];
+        const [draggedCard] = updatedCards.splice(draggedIndex, 1);
+        updatedCards.splice(targetIndex, 0, draggedCard);
+
+        setCards(updatedCards);
+    };
+
+    const deleteCard = (id: number) => {
+        setCards(cards.filter((card: { id: number; }) => card.id !== id));
+    };
+
+    const updateCardText = (id: number, newText: string) => {
+        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, text: newText } : card)));
+    };
+
+    const updateCardValue = (id: number, newValue: number) => {
+        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, value: newValue } : card)));
+    };
+
+    const updateCardMaxHp = (id: number, newMaxHp: number) => {
+        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, max_hp: newMaxHp } : card)));
+    };
+
+    const updateCardInitiative = (id: number, newInitiative: number) => {
+        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, initiative: newInitiative } : card)));
+    };
     return (
         <div className="container">
             <form onSubmit={handleAddCard} className="form">
@@ -84,12 +113,12 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({ initialCard
                         max_hp={card.max_hp}
                         value={card.value}
                         initiative={card.initiative}
-                        moveCard={() => {}}
-                        deleteCard={() => {}}
-                        updateCardValue={() => {}}
-                        updateCardInitiative={() => {}}
-                        updateCardText={() => {}}
-                        updateCardMaxHp={() => {}}
+                        moveCard={moveCard}
+                        deleteCard={deleteCard}
+                        updateCardValue={updateCardValue}
+                        updateCardInitiative={updateCardInitiative}
+                        updateCardText={updateCardText}
+                        updateCardMaxHp={updateCardMaxHp}
                     />
                 ))}
             </div>
