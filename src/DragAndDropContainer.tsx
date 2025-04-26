@@ -92,6 +92,17 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({initialCards
                     onChange={(e) => setNewCardText(e.target.value)}
                     className="input"
                 />
+                <div className="initiative-container">
+                    <label htmlFor={`initiative`} className="card-label">Инициатива</label>
+                    <input
+                        type="number"
+                        min={0}
+                        placeholder="Initiative"
+                        value={newCardInitiative}
+                        onChange={(e) => setNewCardInitiative(Number(e.target.value))}
+                        className="card-input input-numeric"
+                    />
+                </div>
                 <label htmlFor="max_hp" className="card-label">Максимальное здоровье</label>
                 <input
                     type="text"
@@ -100,15 +111,7 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({initialCards
                     onChange={(e) => setNewCardMaxHp(Number(e.target.value))}
                     className="card-input input-numeric"
                 />
-                <label htmlFor="initiative" className="card-label">Инициатива</label>
-                <input
-                    type="number"
-                    min={0}
-                    placeholder="Initiative"
-                    value={newCardInitiative}
-                    onChange={(e) => setNewCardInitiative(Number(e.target.value))}
-                    className="card-input input-numeric"
-                />
+
                 <button type="submit" className="card-button">Add Card</button>
             </form>
             <button onClick={sortByInitiative} className="button sort-button">

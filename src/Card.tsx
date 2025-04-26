@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import React, {useRef, useEffect} from 'react';
+import {useDrag, useDrop} from 'react-dnd';
 import './Card.css'; // Импорт CSS
 
 const ItemType = {
@@ -44,9 +44,9 @@ const Card: React.FC<CardProps> = ({
         },
     });
 
-    const [{ isDragging }, drag] = useDrag({
+    const [{isDragging}, drag] = useDrag({
         type: ItemType.CARD,
-        item: { id },
+        item: {id},
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -69,26 +69,32 @@ const Card: React.FC<CardProps> = ({
                     onChange={(e) => updateCardText(id, e.target.value)}
                     className="card-input"
                 />
-                <label htmlFor={`health-${id}`}>Здоровье</label>
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => updateCardValue(id, e.target.value)}
-                    className="card-input, input-numeric"
-                /><span>/</span>
+                <label htmlFor={`iniciative-${id}`}>Инициатива</label>
                 <input
                     type="number"
                     min={-999}
-                    value={max_hp}
-                    onChange={(e) => updateCardMaxHp(id, e.target.value)}
+                    value={initiative}
+                    onChange={(e) => updateCardInitiative(id, e.target.value)}
                     className="card-input, input-numeric"
-                /><label htmlFor={`iniciative-${id}`}>Инициатива</label> <input
-                type="number"
-                min={-999}
-                value={initiative}
-                onChange={(e) => updateCardInitiative(id, e.target.value)}
-                className="card-input, input-numeric"
-            />
+                />
+                <div className="health-container">
+                    <label htmlFor={`health-${id}`}>Здоровье</label>
+                    <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => updateCardValue(id, e.target.value)}
+                        className="card-input input-numeric"
+                    />
+                    <span>/</span>
+                    <input
+                        type="number"
+                        min={-999}
+                        value={max_hp}
+                        onChange={(e) => updateCardMaxHp(id, e.target.value)}
+                        className="card-input input-numeric"
+                    />
+                </div>
+
             </div>
             <button onClick={() => deleteCard(id)} className="card-delete-button">
                 Delete

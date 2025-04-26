@@ -68,3 +68,48 @@ label {
     -webkit-appearance: none; /* Убирает стрелочки в WebKit-браузерах */
     margin: 0; /* Убирает отступы */
 }
+
+.card-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 8px;
+    display: flex;
+    align-items: center; /* Выровнять текст по вертикали */
+    min-width: 120px; /* Убедитесь, что ширина достаточна для текста */
+}
+
+.initiative-container {
+    display: flex;
+    align-items: center; /* Aligns label and input vertically */
+    gap: 8px; /* Adds spacing between label and input */
+}
+
+.card-button {
+    padding: 8px 16px;
+    background-color: #28a745; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.card-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.health-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns content to the right */
+    align-items: center; /* Vertically aligns items */
+    gap: 4px; /* Adds spacing between elements */
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Align items vertically */
+}
