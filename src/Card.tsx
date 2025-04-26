@@ -14,10 +14,10 @@ interface CardProps {
     initiative: number;
     moveCard: (draggedId: number, targetId: number) => void;
     deleteCard: (id: number) => void;
-    updateCardValue: (id: number, newValue: number) => void;
-    updateCardInitiative: (id: number, newInitiative: number) => void;
+    updateCardValue: (id: number, newValue: string) => void;
+    updateCardInitiative: (id: number, newInitiative: string) => void;
     updateCardText: (id: number, newText: string) => void;
-    updateCardMaxHp: (id: number, newMaxHp: number) => void;
+    updateCardMaxHp: (id: number, newMaxHp: string) => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -69,28 +69,26 @@ const Card: React.FC<CardProps> = ({
                     onChange={(e) => updateCardText(id, e.target.value)}
                     className="card-input"
                 />
+                <label htmlFor={`health-${id}`}>Здоровье</label>
                 <input
-                    type="number"
-                    min={0}
-                    max={max_hp}
+                    type="text"
                     value={value}
-                    onChange={(e) => updateCardValue(id, Number(e.target.value))}
-                    className="card-input"
-                />
+                    onChange={(e) => updateCardValue(id, e.target.value)}
+                    className="card-input, input-numeric"
+                /><span>/</span>
                 <input
                     type="number"
-                    min={0}
+                    min={-999}
                     value={max_hp}
-                    onChange={(e) => updateCardMaxHp(id, Number(e.target.value))}
-                    className="card-input"
-                />
-                <input
-                    type="number"
-                    min={0}
-                    value={initiative}
-                    onChange={(e) => updateCardInitiative(id, Number(e.target.value))}
-                    className="card-input"
-                />
+                    onChange={(e) => updateCardMaxHp(id, e.target.value)}
+                    className="card-input, input-numeric"
+                /><label htmlFor={`iniciative-${id}`}>Инициатива</label> <input
+                type="number"
+                min={-999}
+                value={initiative}
+                onChange={(e) => updateCardInitiative(id, e.target.value)}
+                className="card-input, input-numeric"
+            />
             </div>
             <button onClick={() => deleteCard(id)} className="card-delete-button">
                 Delete

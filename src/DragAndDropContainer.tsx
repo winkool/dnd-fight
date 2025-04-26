@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Card from './Card';
 import './DragAndDropContainer.css'; // Import CSS file
 
@@ -6,12 +6,12 @@ interface DragAndDropContainerProps {
     initialCards: { id: number; text: string; max_hp: number }[];
 }
 
-const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({ initialCards }) => {
+const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({initialCards}) => {
     const [cards, setCards] = useState(() => {
         const savedCards = localStorage.getItem('cards');
         return savedCards
             ? JSON.parse(savedCards)
-            : initialCards.map(card => ({ ...card, value: card.max_hp, initiative: 0 }));
+            : initialCards.map(card => ({...card, value: card.max_hp, initiative: 0}));
     });
     const [newCardText, setNewCardText] = useState('');
     const [newCardMaxHp, setNewCardMaxHp] = useState(100);
@@ -59,47 +59,57 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({ initialCard
     };
 
     const updateCardText = (id: number, newText: string) => {
-        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, text: newText } : card)));
+        setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, text: newText} : card)));
     };
 
-    const updateCardValue = (id: number, newValue: number) => {
-        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, value: newValue } : card)));
+    const updateCardValue = (id: number, newValue: string) => {
+        if (newValue.length <= 4) {
+            setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, value: newValue} : card)));
+        }
     };
 
-    const updateCardMaxHp = (id: number, newMaxHp: number) => {
-        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, max_hp: newMaxHp } : card)));
+    const updateCardMaxHp = (id: number, newMaxHp: string) => {
+        if (newMaxHp.length <= 4) {
+            setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, max_hp: newMaxHp} : card)));
+        }
     };
 
-    const updateCardInitiative = (id: number, newInitiative: number) => {
-        setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, initiative: newInitiative } : card)));
+    const updateCardInitiative = (id: number, newInitiative: string) => {
+        if (newInitiative.length <= 3) {
+            setCards(cards.map((card: { id: number; }) => (card.id === id ? {
+                ...card,
+                initiative: newInitiative
+            } : card)));
+        }
     };
     return (
         <div className="container">
             <form onSubmit={handleAddCard} className="form">
                 <input
                     type="text"
-                    placeholder="Enter card text"
+                    placeholder="Добавить карточку"
                     value={newCardText}
                     onChange={(e) => setNewCardText(e.target.value)}
                     className="input"
                 />
+                <label htmlFor="max_hp" className="card-label">Максимальное здоровье</label>
                 <input
-                    type="number"
-                    min={0}
+                    type="text"
                     placeholder="Max HP"
                     value={newCardMaxHp}
                     onChange={(e) => setNewCardMaxHp(Number(e.target.value))}
-                    className="input"
+                    className="card-input input-numeric"
                 />
+                <label htmlFor="initiative" className="card-label">Инициатива</label>
                 <input
                     type="number"
                     min={0}
                     placeholder="Initiative"
                     value={newCardInitiative}
                     onChange={(e) => setNewCardInitiative(Number(e.target.value))}
-                    className="input"
+                    className="card-input input-numeric"
                 />
-                <button type="submit" className="button">Add Card</button>
+                <button type="submit" className="card-button">Add Card</button>
             </form>
             <button onClick={sortByInitiative} className="button sort-button">
                 Sort by Initiative

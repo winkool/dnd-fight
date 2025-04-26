@@ -16,6 +16,7 @@
     border-radius: 4px;
 }
 
+
 .card button {
     padding: 4px 8px;
     background-color: #dc3545;
@@ -34,5 +35,36 @@
     padding: 4px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 60px; /* Set a fixed width for consistency */
+    width: 20ch;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 8px;
+    display: inline-block;
+    min-width: 80px; /* Ensures consistent alignment */
+}
+
+.card span {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin: 0 8px; /* Adds spacing around the separator */
+    display: inline-block;
+    text-align: center;
+}
+
+.input-numeric {
+    width: 4ch; /* Ширина на 3 символа */
+    -moz-appearance: textfield; /* Убирает стрелочки в Firefox */
+    -webkit-appearance: none; /* Убирает стрелочки в Chrome и Safari */
+    appearance: none; /* Убирает стрелочки в современных браузерах */
+    margin: 0; /* Убирает дополнительные отступы */
+}
+.input-numeric::-webkit-inner-spin-button,
+.input-numeric::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Убирает стрелочки в WebKit-браузерах */
+    margin: 0; /* Убирает отступы */
 }
