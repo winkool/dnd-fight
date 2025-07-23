@@ -25,7 +25,13 @@
 .card button:hover {
     background-color: #a97b50; /* Более светлый коричневый при наведении */
 }
-
+.initiative-health-container {
+    display: flex;
+    align-items: center; /* Выравнивание по центру по вертикали */
+    gap: 12px; /* Расстояние между элементами */
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 .card-label {
     font-size: 14px;
     font-weight: bold;
@@ -33,7 +39,7 @@
     margin-right: 8px;
     display: flex;
     align-items: center;
-    min-width: 120px;
+
 }
 
 .card-content {
@@ -55,7 +61,7 @@
     padding: 0.5rem;
     border-radius: 8px;
     font-size: 1rem;
-    width: 4ch;
+    width: 3ch;
 }
 .card-dragging {
     background-color: #2e2e2e; /* Более светлый фон */
@@ -67,4 +73,9 @@
 }
 .input-numeric::placeholder {
     color: #aaaaaa; /* Светлый текст для placeholder */
+}
+.health-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Расстояние между полями ввода */
 }

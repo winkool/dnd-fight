@@ -66,6 +66,7 @@
     align-items: center; /* Aligns label and input vertically */
     justify-content: space-between;
     gap: 8px; /* Adds spacing between label and input */
+    flex-basis: 100%; /* Ensures full width for each row */
 }
 /* Адаптивность */
 @media (max-width: 920px) {
