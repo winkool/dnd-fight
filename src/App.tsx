@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     DndContext,
     KeyboardSensor,
@@ -7,30 +7,30 @@ import {
     useSensors,
     closestCorners,
 } from "@dnd-kit/core";
-import {arrayMove, sortableKeyboardCoordinates} from "@dnd-kit/sortable";
-import {restrictToVerticalAxis} from '@dnd-kit/modifiers';
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 import Column from './componnents/Column/Column';
 import AddCardForm from "./componnents/addCardForm/AddCardForm";
 import "./App.css";
+
 const App: React.FC = () => {
     const initialCards = [
-        {id: 1, text: 'Игрок 1', max_hp: 100}
+        { id: 1, text: 'Игрок 1', max_hp: 100 }
     ];
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                distance: 8, // px — перетаскивание начнётся только после движения мыши на 8px
+                delay: 300, // Задержка в миллисекундах (1 секунда)
+                tolerance: 5, // Допустимое смещение в пикселях до начала перетаскивания
             },
         }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
-    const deleteCard = (id: number) => {
-        setCards(cards.filter((card: { id: number; }) => card.id !== id));
-    };
+
     const [cards, setCards] = useState(() => {
         const savedCards = localStorage.getItem('cards');
         return savedCards
@@ -41,13 +41,20 @@ const App: React.FC = () => {
                 initiative: 0,
             }));
     });
+
     useEffect(() => {
         localStorage.setItem('cards', JSON.stringify(cards));
     }, [cards]);
+
     const getTaskPos = (id: number) => cards.findIndex((card: { id: number }) => card.id === id);
 
+    const handleDragStart = () => {
+        window.addEventListener('touchmove', preventScroll, { passive: false });
+    };
+
     const handleDragEnd = (event: { active: any; over: any }) => {
-        const {active, over} = event;
+        window.removeEventListener('touchmove', preventScroll);
+        const { active, over } = event;
         if (active.id === over.id) return;
         setCards((cards: { id: number; text: string; max_hp: number }[]) => {
             const originalPos = getTaskPos(active.id);
@@ -57,22 +64,29 @@ const App: React.FC = () => {
         });
     };
 
+    const preventScroll = (e: TouchEvent) => {
+        e.preventDefault();
+    };
+
+    const deleteCard = (id: number) => {
+        setCards(cards.filter((card: { id: number; }) => card.id !== id));
+    };
+
     const updateCardText = (id: number, newText: string) => {
         setCards(cards.map((card: { id: number, text: string; }) =>
-            card.id === id ? {...card, text: newText} : card
+            card.id === id ? { ...card, text: newText } : card
         ));
     };
 
-
     const updateCardValue = (id: number, newValue: string) => {
         if (newValue.length <= 4) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, value: newValue} : card)));
+            setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, value: newValue } : card)));
         }
     };
 
     const updateCardMaxHp = (id: number, newMaxHp: string) => {
         if (newMaxHp.length <= 4) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, max_hp: newMaxHp} : card)));
+            setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, max_hp: newMaxHp } : card)));
         }
     };
 
@@ -84,10 +98,12 @@ const App: React.FC = () => {
             } : card)));
         }
     };
+
     const sortByInitiative = () => {
         const sortedCards = [...cards].sort((a, b) => b.initiative - a.initiative);
         setCards(sortedCards);
     };
+
     return (
         <div className="App">
             <AddCardForm
@@ -100,6 +116,7 @@ const App: React.FC = () => {
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCorners}
+                onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 modifiers={[restrictToVerticalAxis]}
             >

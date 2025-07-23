@@ -1,13 +1,20 @@
 .column {
     max-width: 600px;
-    width: 90%;
+    width: 80%;
     padding: 1.5rem;
     background-color: #1a1a1a;
     border: 1px solid #4b3621;
     border-radius: 16px;
+    margin: 1rem auto;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
 }
+@media (max-width: 920px) {
+    .column {
+        padding: 1rem;
+    }
 
+
+}
 .form {
     display: flex;
     gap: 10px;
@@ -30,7 +37,19 @@
 }
 
 .sort-button {
-    margin-bottom: 20px;
+    padding: 0.75rem 1.2rem;
+    background-color: #7f5a3a; /* Slightly darker brown for distinction */
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sort-button:hover {
+    background-color: #8a6344; /* Lighter brown on hover */
 }
 
 .cards-container {

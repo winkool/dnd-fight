@@ -28,7 +28,7 @@ const Card: React.FC<CardProps> = ({
                                        updateCardInitiative,
                                        deleteCard,
                                    }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     const style = {
         transition,
@@ -37,7 +37,8 @@ const Card: React.FC<CardProps> = ({
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="card">
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}         className={`card ${isDragging ? 'card-dragging' : ''}`}
+        >
             <div className="card-content">
                 <input
                     type="text"
