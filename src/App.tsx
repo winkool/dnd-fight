@@ -23,7 +23,7 @@ const App: React.FC = () => {
         useSensor(PointerSensor, {
             activationConstraint: {
                 delay: 300, // Задержка в миллисекундах (1 секунда)
-                tolerance: 8, // Допустимое смещение в пикселях до начала перетаскивания
+                tolerance: 5, // Допустимое смещение в пикселях до начала перетаскивания
             },
         }),
         useSensor(KeyboardSensor, {
@@ -49,12 +49,10 @@ const App: React.FC = () => {
     const getTaskPos = (id: number) => cards.findIndex((card: { id: number }) => card.id === id);
 
     const handleDragStart = () => {
-        document.body.style.overflow = 'hidden';
         window.addEventListener('touchmove', preventScroll, { passive: false });
     };
 
     const handleDragEnd = (event: { active: any; over: any }) => {
-        document.body.style.overflow = '';
         window.removeEventListener('touchmove', preventScroll);
         const { active, over } = event;
         if (active.id === over.id) return;
