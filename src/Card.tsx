@@ -43,35 +43,41 @@ const Card: React.FC<CardProps> = ({
                     type="text"
                     value={text}
                     onChange={(e) => updateCardText(id, e.target.value)}
-                    className="card-input"
+                    className="card-input card-name-input"
                 />
-                <label>Initiative</label>
-                <input
-                    type="number"
-                    min={-999}
-                    value={initiative}
-                    onChange={(e) => updateCardInitiative(id, e.target.value)}
-                    className="card-input input-numeric"
-                />
-                <div className="health-container">
-                    <label>Health</label>
-                    <input
-                        type="text"
-                        value={value}
-                        onChange={(e) => updateCardValue(id, e.target.value)}
-                        className="card-input input-numeric"
-                    />
-                    <span>/</span>
-                    <input
-                        type="number"
-                        min={-999}
-                        value={max_hp}
-                        onChange={(e) => updateCardMaxHp(id, e.target.value)}
-                        className="card-input input-numeric"
-                    />
+                <div className="initiative-health-container">
+                    <div className="initiative-container">
+                        <label className={'card-label'}>Инициатива</label>
+                        <input
+                            type="number"
+                            min={-999}
+                            value={initiative}
+                            onChange={(e) => updateCardInitiative(id, e.target.value)}
+                            className="card-input input-numeric"
+                        />
+                    </div>
+                    <div className="hp-container">
+                        <label className={'card-label'}>Здоровье</label>
+                        <div className="health-inputs">
+                            <input
+                                type="number"
+                                value={value}
+                                onChange={(e) => updateCardValue(id, e.target.value)}
+                                className="card-input input-numeric"
+                            />
+                            <span className="health-separator">/</span>
+                            <input
+                                type="number"
+                                min={-999}
+                                value={max_hp}
+                                onChange={(e) => updateCardMaxHp(id, e.target.value)}
+                                className="card-input input-numeric"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button className="card-delete-button" onClick={() => deleteCard(id)}>Delete</button>
+            <button className="card-delete-button" onClick={() => deleteCard(id)}>Удалить</button>
         </div>
     );
 };

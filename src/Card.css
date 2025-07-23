@@ -1,116 +1,63 @@
 .card {
     padding: 16px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #1a1a1a; /* Темный фон, как у других контейнеров */
+    border: 1px solid #4b3621; /* Коричневая рамка */
+    border-radius: 16px; /* Закругленные углы */
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); /* Золотистая тень */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Содержимое располагается вертикально */
+    gap: 12px; /* Расстояние между элементами */
     touch-action: none;
 }
 
-.card input {
-    margin-right: 8px;
-    padding: 4px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-
 .card button {
-    padding: 4px 8px;
-    background-color: #dc3545;
+    padding: 8px 16px;
+    background-color: #7f5a3a; /* Коричневый фон кнопки */
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .card button:hover {
-    background-color: #a71d2a;
-}
-
-.card-input {
-    padding: 4px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 20ch;
-}
-
-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    margin-right: 8px;
-    display: inline-block;
-    min-width: 80px; /* Ensures consistent alignment */
-}
-
-.card span {
-    font-size: 16px;
-    font-weight: bold;
-    color: #555;
-    margin: 0 8px; /* Adds spacing around the separator */
-    display: inline-block;
-    text-align: center;
-}
-
-.input-numeric {
-    width: 4ch; /* Ширина на 3 символа */
-    -moz-appearance: textfield; /* Убирает стрелочки в Firefox */
-    -webkit-appearance: none; /* Убирает стрелочки в Chrome и Safari */
-    appearance: none; /* Убирает стрелочки в современных браузерах */
-    margin: 0; /* Убирает дополнительные отступы */
-}
-.input-numeric::-webkit-inner-spin-button,
-.input-numeric::-webkit-outer-spin-button {
-    -webkit-appearance: none; /* Убирает стрелочки в WebKit-браузерах */
-    margin: 0; /* Убирает отступы */
+    background-color: #a97b50; /* Более светлый коричневый при наведении */
 }
 
 .card-label {
     font-size: 14px;
     font-weight: bold;
-    color: #333;
+    color: #d4af37; /* Золотистый цвет текста */
     margin-right: 8px;
     display: flex;
-    align-items: center; /* Выровнять текст по вертикали */
-    min-width: 120px; /* Убедитесь, что ширина достаточна для текста */
-}
-
-.initiative-container {
-    display: flex;
-    align-items: center; /* Aligns label and input vertically */
-    gap: 8px; /* Adds spacing between label and input */
-}
-
-.card-button {
-    padding: 8px 16px;
-    background-color: #28a745; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
-    font-size: 14px; /* Font size */
-    font-weight: bold; /* Bold text */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
-}
-
-.card-button:hover {
-    background-color: #218838; /* Darker green on hover */
-}
-
-.health-container {
-    display: flex;
-    justify-content: flex-end; /* Aligns content to the right */
-    align-items: center; /* Vertically aligns items */
-    gap: 4px; /* Adds spacing between elements */
+    align-items: center;
+    min-width: 120px;
 }
 
 .card-content {
     display: flex;
-    justify-content: space-between; /* Space between left and right sections */
-    align-items: center; /* Align items vertically */
+    flex-direction: column; /* Содержимое располагае��ся вертикально */
+    gap: 8px; /* Расстояние между элементами */
+}
+
+.health-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.input-numeric {
+    background-color: #2e2e2e; /* Темный фон */
+    border: 1px solid #7f5a3a; /* Коричневая рамка */
+    color: #ffffff; /* Белый текст */
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 4ch;
+}
+
+.input-numeric::placeholder {
+    color: #aaaaaa; /* Светлый текст для placeholder */
 }
