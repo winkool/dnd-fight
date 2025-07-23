@@ -27,6 +27,19 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = ({cards, setCards}) => 
         setNewCardMaxHp(100);
         setNewCardInitiative(0);
     };
+
+    const createHandleNumChange = (setValue: React.Dispatch<React.SetStateAction<number>>) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value || '0'; // Default to '0' if the input is empty
+            const numericValue = Number(value); // Convert to a number
+            e.target.value = String(numericValue)
+            setValue(numericValue); // Update the state
+        };
+    };
+
+// Usage
+    const handleInitiativeChange = createHandleNumChange(setNewCardInitiative);
+    const handleMaxHpChange = createHandleNumChange(setNewCardMaxHp);
     return (
         <div className="add-card-form-container">
             <form onSubmit={handleAddCard} className="form">
@@ -45,7 +58,7 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = ({cards, setCards}) => 
                         min={0}
                         placeholder="Initiative"
                         value={newCardInitiative}
-                        onChange={(e) => setNewCardInitiative(Number(e.target.value))}
+                        onChange={handleInitiativeChange}
                         className="card-input input-numeric"
                     />
                 </div>
@@ -56,7 +69,7 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = ({cards, setCards}) => 
                         type="number"
                         placeholder="Max HP"
                         value={newCardMaxHp}
-                        onChange={(e) => setNewCardMaxHp(Number(e.target.value))}
+                        onChange={handleMaxHpChange}
                         className="card-input input-numeric"
                     />
                 </div>
