@@ -23,7 +23,7 @@ const App: React.FC = () => {
         useSensor(PointerSensor, {
             activationConstraint: {
                 delay: 300, // Задержка в миллисекундах (1 секунда)
-                tolerance: 5, // Допустимое смещение в пикселях до начала перетаскивания
+                tolerance: 8, // Допустимое смещение в пикселях до начала перетаскивания
             },
         }),
         useSensor(KeyboardSensor, {
