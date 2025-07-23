@@ -1,10 +1,20 @@
-import {useSortable} from "@dnd-kit/sortable";
-import {CSS} from "@dnd-kit/utilities";
-
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import './Card.css';
 import React from "react";
-import {CardProps} from "./CardProps";
 
+interface CardProps {
+    id: number;
+    text: string;
+    max_hp: number;
+    value: number;
+    initiative: number;
+    updateCardText: (id: number, text: string) => void;
+    updateCardValue: (id: number, value: string) => void;
+    updateCardMaxHp: (id: number, maxHp: string) => void;
+    updateCardInitiative: (id: number, initiative: string) => void;
+    deleteCard: (id: number) => void;
+}
 
 const Card: React.FC<CardProps> = ({
                                        id,
@@ -16,32 +26,18 @@ const Card: React.FC<CardProps> = ({
                                        updateCardValue,
                                        updateCardMaxHp,
                                        updateCardInitiative,
+                                       deleteCard,
                                    }) => {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition
-    } =
-        useSortable({id});
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
     const style = {
         transition,
         transform: CSS.Transform.toString(transform),
-        willChange: 'transform', // Оптимизация
-
+        willChange: 'transform',
     };
 
-
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            className={'card'}
-        >
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="card">
             <div className="card-content">
                 <input
                     type="text"
@@ -49,16 +45,16 @@ const Card: React.FC<CardProps> = ({
                     onChange={(e) => updateCardText(id, e.target.value)}
                     className="card-input"
                 />
-                <label htmlFor={`iniciative-${id}`}>Инициатива</label>
+                <label>Initiative</label>
                 <input
                     type="number"
                     min={-999}
                     value={initiative}
                     onChange={(e) => updateCardInitiative(id, e.target.value)}
-                    className="card-input, input-numeric"
+                    className="card-input input-numeric"
                 />
                 <div className="health-container">
-                    <label htmlFor={`health-${id}`}>Здоровье</label>
+                    <label>Health</label>
                     <input
                         type="text"
                         value={value}
@@ -74,13 +70,8 @@ const Card: React.FC<CardProps> = ({
                         className="card-input input-numeric"
                     />
                 </div>
-
             </div>
-            <button
-                // onClick={() => deleteCard(id)}
-                className="card-delete-button">
-                Delete
-            </button>
+            <button className="card-delete-button" onClick={() => deleteCard(id)}>Delete</button>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     DndContext,
     KeyboardSensor,
@@ -7,14 +7,15 @@ import {
     useSensors,
     closestCorners,
 } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import {arrayMove, sortableKeyboardCoordinates} from "@dnd-kit/sortable";
+import {restrictToVerticalAxis} from '@dnd-kit/modifiers';
 
 import DragAndDropContainer from './DragAndDropContainer';
+import AddCardForm from "./componnents/addCardForm/AddCardForm";
 
 const App: React.FC = () => {
     const initialCards = [
-        { id: 1, text: 'Игрок 1', max_hp: 100 }
+        {id: 1, text: 'Игрок 1', max_hp: 100}
     ];
 
     const sensors = useSensors(
@@ -27,7 +28,9 @@ const App: React.FC = () => {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
-
+    const deleteCard = (id: number) => {
+        setCards(cards.filter((card: { id: number; }) => card.id !== id));
+    };
     const [cards, setCards] = useState(() => {
         const savedCards = localStorage.getItem('cards');
         return savedCards
@@ -44,7 +47,7 @@ const App: React.FC = () => {
     const getTaskPos = (id: number) => cards.findIndex((card: { id: number }) => card.id === id);
 
     const handleDragEnd = (event: { active: any; over: any }) => {
-        const { active, over } = event;
+        const {active, over} = event;
         if (active.id === over.id) return;
         setCards((cards: { id: number; text: string; max_hp: number }[]) => {
             const originalPos = getTaskPos(active.id);
@@ -55,8 +58,8 @@ const App: React.FC = () => {
     };
 
     const updateCardText = (id: number, newText: string) => {
-        setCards(cards.map((card: { id: number, text:string;}) =>
-            card.id === id ? { ...card, text: newText } : card
+        setCards(cards.map((card: { id: number, text: string; }) =>
+            card.id === id ? {...card, text: newText} : card
         ));
     };
 
@@ -81,21 +84,35 @@ const App: React.FC = () => {
             } : card)));
         }
     };
+    const sortByInitiative = () => {
+        const sortedCards = [...cards].sort((a, b) => b.initiative - a.initiative);
+        setCards(sortedCards);
+    };
     return (
-        <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragEnd={handleDragEnd}
-            modifiers={[restrictToVerticalAxis]}
-        >
-            <DragAndDropContainer
+        <>
+            <AddCardForm
                 cards={cards}
-                updateCardText={updateCardText}
-                updateCardValue={updateCardValue}
-                updateCardMaxHp={updateCardMaxHp}
-                updateCardInitiative={updateCardInitiative}
+                setCards={setCards}
             />
-        </DndContext>
+            <button onClick={sortByInitiative} className="button sort-button">
+                Sort by Initiative
+            </button>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCorners}
+                onDragEnd={handleDragEnd}
+                modifiers={[restrictToVerticalAxis]}
+            >
+                <DragAndDropContainer
+                    cards={cards}
+                    updateCardText={updateCardText}
+                    updateCardValue={updateCardValue}
+                    updateCardMaxHp={updateCardMaxHp}
+                    updateCardInitiative={updateCardInitiative}
+                    deleteCard={deleteCard}
+                />
+            </DndContext>
+        </>
     );
 };
 

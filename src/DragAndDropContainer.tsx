@@ -10,6 +10,7 @@ interface DragAndDropContainerProps {
     updateCardValue: (id: number, newValue: string) => void;
     updateCardMaxHp: (id: number, newMaxHp: string) => void;
     updateCardInitiative: (id: number, newInitiative: string) => void;
+    deleteCard: (id: number) => void;
 }
 
 const DragAndDropContainer: React.FC<DragAndDropContainerProps> = (
@@ -18,7 +19,8 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = (
         updateCardText,
         updateCardValue,
         updateCardMaxHp,
-        updateCardInitiative
+        updateCardInitiative,
+        deleteCard
     }) => {
     return (
         <div className="column">
@@ -35,6 +37,7 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = (
                         updateCardValue={updateCardValue}
                         updateCardMaxHp={updateCardMaxHp}
                         updateCardInitiative={updateCardInitiative}
+                        deleteCard={deleteCard}
                     />
                 ))}
             </SortableContext>
