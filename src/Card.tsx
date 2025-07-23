@@ -1,24 +1,10 @@
-import React, {useRef, useEffect} from 'react';
-import {useDrag, useDrop} from 'react-dnd';
-import './Card.css'; // Импорт CSS
+import {useSortable} from "@dnd-kit/sortable";
+import {CSS} from "@dnd-kit/utilities";
 
-const ItemType = {
-    CARD: 'card',
-};
+import './Card.css';
+import React from "react";
+import {CardProps} from "./CardProps";
 
-interface CardProps {
-    id: number;
-    text: string;
-    max_hp: number;
-    value: number;
-    initiative: number;
-    moveCard: (draggedId: number, targetId: number) => void;
-    deleteCard: (id: number) => void;
-    updateCardValue: (id: number, newValue: string) => void;
-    updateCardInitiative: (id: number, newInitiative: string) => void;
-    updateCardText: (id: number, newText: string) => void;
-    updateCardMaxHp: (id: number, newMaxHp: string) => void;
-}
 
 const Card: React.FC<CardProps> = ({
                                        id,
@@ -26,42 +12,36 @@ const Card: React.FC<CardProps> = ({
                                        max_hp,
                                        value,
                                        initiative,
-                                       moveCard,
-                                       deleteCard,
-                                       updateCardValue,
-                                       updateCardInitiative,
                                        updateCardText,
+                                       updateCardValue,
                                        updateCardMaxHp,
+                                       updateCardInitiative,
                                    }) => {
-    const ref = useRef<HTMLDivElement | null>(null);
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition
+    } =
+        useSortable({id});
 
-    const [, drop] = useDrop({
-        accept: ItemType.CARD,
-        hover: (item: { id: number }) => {
-            if (item.id !== id) {
-                moveCard(item.id, id);
-            }
-        },
-    });
+    const style = {
+        transition,
+        transform: CSS.Transform.toString(transform),
+        willChange: 'transform', // Оптимизация
 
-    const [{isDragging}, drag] = useDrag({
-        type: ItemType.CARD,
-        item: {id},
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    });
+    };
 
-    useEffect(() => {
-        if (ref.current) {
-            drag(drop(ref.current));
-        }
-    }, [drag, drop]);
-
-    const cardClass = isDragging ? 'card dragging' : 'card';
 
     return (
-        <div ref={ref} className={cardClass}>
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            className={'card'}
+        >
             <div className="card-content">
                 <input
                     type="text"
@@ -96,7 +76,9 @@ const Card: React.FC<CardProps> = ({
                 </div>
 
             </div>
-            <button onClick={() => deleteCard(id)} className="card-delete-button">
+            <button
+                // onClick={() => deleteCard(id)}
+                className="card-delete-button">
                 Delete
             </button>
         </div>

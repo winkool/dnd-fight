@@ -1,124 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Card from './Card';
-import './DragAndDropContainer.css'; // Import CSS file
+import './DragAndDropContainer.css';
+import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import {CardProps} from "./CardProps";
 
 interface DragAndDropContainerProps {
-    initialCards: { id: number; text: string; max_hp: number }[];
+    cards: CardProps[];
+    updateCardText: (id: number, newText: string) => void;
+    updateCardValue: (id: number, newValue: string) => void;
+    updateCardMaxHp: (id: number, newMaxHp: string) => void;
+    updateCardInitiative: (id: number, newInitiative: string) => void;
 }
 
-const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({initialCards}) => {
-    const [cards, setCards] = useState(() => {
-        const savedCards = localStorage.getItem('cards');
-        return savedCards
-            ? JSON.parse(savedCards)
-            : initialCards.map(card => ({...card, value: card.max_hp, initiative: 0}));
-    });
-    const [newCardText, setNewCardText] = useState('');
-    const [newCardMaxHp, setNewCardMaxHp] = useState(100);
-    const [newCardInitiative, setNewCardInitiative] = useState(0);
-
-    useEffect(() => {
-        localStorage.setItem('cards', JSON.stringify(cards));
-    }, [cards]);
-
-    const handleAddCard = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (newCardText.trim() === '') return;
-
-        const newCard = {
-            id: Date.now(),
-            text: newCardText,
-            max_hp: newCardMaxHp,
-            value: newCardMaxHp,
-            initiative: newCardInitiative,
-        };
-
-        setCards([...cards, newCard]);
-        setNewCardText('');
-        setNewCardMaxHp(100);
-        setNewCardInitiative(0);
-    };
-
-    const sortByInitiative = () => {
-        const sortedCards = [...cards].sort((a, b) => b.initiative - a.initiative);
-        setCards(sortedCards);
-    };
-    const moveCard = (draggedId: number, targetId: number) => {
-        const draggedIndex = cards.findIndex((card: { id: number; }) => card.id === draggedId);
-        const targetIndex = cards.findIndex((card: { id: number; }) => card.id === targetId);
-
-        const updatedCards = [...cards];
-        const [draggedCard] = updatedCards.splice(draggedIndex, 1);
-        updatedCards.splice(targetIndex, 0, draggedCard);
-
-        setCards(updatedCards);
-    };
-
-    const deleteCard = (id: number) => {
-        setCards(cards.filter((card: { id: number; }) => card.id !== id));
-    };
-
-    const updateCardText = (id: number, newText: string) => {
-        setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, text: newText} : card)));
-    };
-
-    const updateCardValue = (id: number, newValue: string) => {
-        if (newValue.length <= 4) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, value: newValue} : card)));
-        }
-    };
-
-    const updateCardMaxHp = (id: number, newMaxHp: string) => {
-        if (newMaxHp.length <= 4) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? {...card, max_hp: newMaxHp} : card)));
-        }
-    };
-
-    const updateCardInitiative = (id: number, newInitiative: string) => {
-        if (newInitiative.length <= 3) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? {
-                ...card,
-                initiative: newInitiative
-            } : card)));
-        }
-    };
+const DragAndDropContainer: React.FC<DragAndDropContainerProps> = (
+    {
+        cards,
+        updateCardText,
+        updateCardValue,
+        updateCardMaxHp,
+        updateCardInitiative
+    }) => {
     return (
-        <div className="container">
-            <form onSubmit={handleAddCard} className="form">
-                <input
-                    type="text"
-                    placeholder="Добавить карточку"
-                    value={newCardText}
-                    onChange={(e) => setNewCardText(e.target.value)}
-                    className="input"
-                />
-                <div className="initiative-container">
-                    <label htmlFor={`initiative`} className="card-label">Инициатива</label>
-                    <input
-                        type="number"
-                        min={0}
-                        placeholder="Initiative"
-                        value={newCardInitiative}
-                        onChange={(e) => setNewCardInitiative(Number(e.target.value))}
-                        className="card-input input-numeric"
-                    />
-                </div>
-                <label htmlFor="max_hp" className="card-label">Максимальное здоровье</label>
-                <input
-                    type="text"
-                    placeholder="Max HP"
-                    value={newCardMaxHp}
-                    onChange={(e) => setNewCardMaxHp(Number(e.target.value))}
-                    className="card-input input-numeric"
-                />
-
-                <button type="submit" className="card-button">Add Card</button>
-            </form>
-            <button onClick={sortByInitiative} className="button sort-button">
-                Sort by Initiative
-            </button>
-            <div className="cards-container">
-                {cards.map((card: { id: number; text: string; max_hp: number; value: number; initiative: number; }) => (
+        <div className="column">
+            <SortableContext items={cards} strategy={verticalListSortingStrategy}>
+                {cards.map((card: CardProps) => (
                     <Card
                         key={card.id}
                         id={card.id}
@@ -126,15 +31,13 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = ({initialCards
                         max_hp={card.max_hp}
                         value={card.value}
                         initiative={card.initiative}
-                        moveCard={moveCard}
-                        deleteCard={deleteCard}
-                        updateCardValue={updateCardValue}
-                        updateCardInitiative={updateCardInitiative}
                         updateCardText={updateCardText}
+                        updateCardValue={updateCardValue}
                         updateCardMaxHp={updateCardMaxHp}
+                        updateCardInitiative={updateCardInitiative}
                     />
                 ))}
-            </div>
+            </SortableContext>
         </div>
     );
 };
