@@ -1,8 +1,8 @@
 import React from 'react';
-import Card from './Card';
-import './DragAndDropContainer.css';
+import Card from '../../Card';
+import './Column.css';
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {CardProps} from "./CardProps";
+import {CardProps} from "../../CardProps";
 
 interface DragAndDropContainerProps {
     cards: CardProps[];
@@ -13,7 +13,7 @@ interface DragAndDropContainerProps {
     deleteCard: (id: number) => void;
 }
 
-const DragAndDropContainer: React.FC<DragAndDropContainerProps> = (
+const Column: React.FC<DragAndDropContainerProps> = (
     {
         cards,
         updateCardText,
@@ -45,4 +45,4 @@ const DragAndDropContainer: React.FC<DragAndDropContainerProps> = (
     );
 };
 
-export default DragAndDropContainer;
+export default Column;

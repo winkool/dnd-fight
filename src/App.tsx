@@ -10,9 +10,9 @@ import {
 import {arrayMove, sortableKeyboardCoordinates} from "@dnd-kit/sortable";
 import {restrictToVerticalAxis} from '@dnd-kit/modifiers';
 
-import DragAndDropContainer from './DragAndDropContainer';
+import Column from './componnents/Column/Column';
 import AddCardForm from "./componnents/addCardForm/AddCardForm";
-
+import "./App.css";
 const App: React.FC = () => {
     const initialCards = [
         {id: 1, text: 'Игрок 1', max_hp: 100}
@@ -89,7 +89,7 @@ const App: React.FC = () => {
         setCards(sortedCards);
     };
     return (
-        <>
+        <div className="App">
             <AddCardForm
                 cards={cards}
                 setCards={setCards}
@@ -103,7 +103,7 @@ const App: React.FC = () => {
                 onDragEnd={handleDragEnd}
                 modifiers={[restrictToVerticalAxis]}
             >
-                <DragAndDropContainer
+                <Column
                     cards={cards}
                     updateCardText={updateCardText}
                     updateCardValue={updateCardValue}
@@ -112,7 +112,7 @@ const App: React.FC = () => {
                     deleteCard={deleteCard}
                 />
             </DndContext>
-        </>
+        </div>
     );
 };
 
