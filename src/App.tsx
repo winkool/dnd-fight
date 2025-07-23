@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
     DndContext,
     KeyboardSensor,
-    PointerSensor,
     useSensor,
     useSensors,
-    closestCorners,
+    closestCorners, MouseSensor, TouchSensor,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
@@ -20,10 +19,17 @@ const App: React.FC = () => {
     ];
 
     const sensors = useSensors(
-        useSensor(PointerSensor, {
+        useSensor(MouseSensor, {
+            // Require the mouse to move by 10 pixels before activating
             activationConstraint: {
-                delay: 300, // Задержка в миллисекундах (1 секунда)
-                tolerance: 5, // Допустимое смещение в пикселях до начала перетаскивания
+                distance: 10,
+            },
+        }),
+        useSensor(TouchSensor, {
+            // Press delay of 250ms, with tolerance of 5px of movement
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
             },
         }),
         useSensor(KeyboardSensor, {
