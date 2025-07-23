@@ -49,10 +49,12 @@ const App: React.FC = () => {
     const getTaskPos = (id: number) => cards.findIndex((card: { id: number }) => card.id === id);
 
     const handleDragStart = () => {
+        document.body.style.overflow = 'hidden';
         window.addEventListener('touchmove', preventScroll, { passive: false });
     };
 
     const handleDragEnd = (event: { active: any; over: any }) => {
+        document.body.style.overflow = '';
         window.removeEventListener('touchmove', preventScroll);
         const { active, over } = event;
         if (active.id === over.id) return;
