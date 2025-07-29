@@ -1,28 +1,26 @@
 import React, {useState} from "react";
 import './AddCardForm.css';
+import {useCards} from "../../CardsContext";
 
 interface DragAndDropContainerProps {
-    cards: any;
-    setCards: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AddCardForm: React.FC<DragAndDropContainerProps> = ({cards, setCards}) => {
+const AddCardForm: React.FC<DragAndDropContainerProps> = () => {
     const [newCardText, setNewCardText] = useState('');
     const [newCardMaxHp, setNewCardMaxHp] = useState(100);
     const [newCardInitiative, setNewCardInitiative] = useState(0);
 
+    const {addCard} = useCards();
     const handleAddCard = (e: React.FormEvent) => {
         e.preventDefault();
         if (newCardText.trim() === '') return;
-
-        const newCard = {
+        addCard({
             id: Date.now(),
             text: newCardText,
             max_hp: newCardMaxHp,
             value: newCardMaxHp,
             initiative: newCardInitiative,
-        };
-        setCards([...cards, newCard]);
+        });
         setNewCardText('');
         setNewCardMaxHp(100);
         setNewCardInitiative(0);

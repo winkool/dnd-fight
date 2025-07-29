@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     DndContext,
     KeyboardSensor,
@@ -6,16 +6,17 @@ import {
     useSensors,
     closestCorners, MouseSensor, TouchSensor,
 } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import {arrayMove, sortableKeyboardCoordinates} from "@dnd-kit/sortable";
+import {restrictToVerticalAxis} from '@dnd-kit/modifiers';
 
 import Column from './componnents/Column/Column';
 import AddCardForm from "./componnents/addCardForm/AddCardForm";
 import "./App.css";
+import {CardsContext, CardType} from './CardsContext';
 
 const App: React.FC = () => {
     const initialCards = [
-        { id: 1, text: 'Игрок 1', max_hp: 100 }
+        {id: 1, text: 'Игрок 1', max_hp: 100}
     ];
 
     const sensors = useSensors(
@@ -37,7 +38,7 @@ const App: React.FC = () => {
         })
     );
 
-    const [cards, setCards] = useState(() => {
+    const [cards, setCards]: [CardType[], React.Dispatch<React.SetStateAction<CardType[]>>] = useState(() => {
         const savedCards = localStorage.getItem('cards');
         return savedCards
             ? JSON.parse(savedCards)
@@ -47,62 +48,44 @@ const App: React.FC = () => {
                 initiative: 0,
             }));
     });
+    const addCard = (newCard: CardType) => {
+        setCards((prev: CardType[]) => [...prev, newCard]);
+    }
 
-    useEffect(() => {
-        localStorage.setItem('cards', JSON.stringify(cards));
-    }, [cards]);
-
+    const updateCard = (id: number, updatedFields: Partial<CardType>) => {
+        setCards((prev: CardType[]) =>
+            prev.map(card =>
+                card.id === id ? {...card, ...updatedFields} : card
+            )
+        );
+    };
+    const deleteCard = (id: number) => {
+        setCards(cards.filter((card: { id: number; }) => card.id !== id));
+    };
     const getTaskPos = (id: number) => cards.findIndex((card: { id: number }) => card.id === id);
 
     const handleDragStart = () => {
-        window.addEventListener('touchmove', preventScroll, { passive: false });
+        window.addEventListener('touchmove', preventScroll, {passive: false});
     };
 
     const handleDragEnd = (event: { active: any; over: any }) => {
+        console.log('Drag End:', event);
         window.removeEventListener('touchmove', preventScroll);
-        const { active, over } = event;
+        const {active, over} = event;
         if (active.id === over.id) return;
-        setCards((cards: { id: number; text: string; max_hp: number }[]) => {
+        setCards((cards) => {
             const originalPos = getTaskPos(active.id);
             const newPos = getTaskPos(over.id);
 
             return arrayMove(cards, originalPos, newPos);
         });
     };
-
+    useEffect(() => {
+        console.log('Cards updated:', cards);
+        localStorage.setItem('cards', JSON.stringify(cards));
+    }, [cards]);
     const preventScroll = (e: TouchEvent) => {
         e.preventDefault();
-    };
-
-    const deleteCard = (id: number) => {
-        setCards(cards.filter((card: { id: number; }) => card.id !== id));
-    };
-
-    const updateCardText = (id: number, newText: string) => {
-        setCards(cards.map((card: { id: number, text: string; }) =>
-            card.id === id ? { ...card, text: newText } : card
-        ));
-    };
-
-    const updateCardValue = (id: number, newValue: string) => {
-        if (newValue.length <= 4) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, value: newValue } : card)));
-        }
-    };
-
-    const updateCardMaxHp = (id: number, newMaxHp: string) => {
-        if (newMaxHp.length <= 4) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? { ...card, max_hp: newMaxHp } : card)));
-        }
-    };
-
-    const updateCardInitiative = (id: number, newInitiative: string) => {
-        if (newInitiative.length <= 3) {
-            setCards(cards.map((card: { id: number; }) => (card.id === id ? {
-                ...card,
-                initiative: newInitiative
-            } : card)));
-        }
     };
 
     const sortByInitiative = () => {
@@ -112,29 +95,24 @@ const App: React.FC = () => {
 
     return (
         <div className="App">
-            <AddCardForm
-                cards={cards}
-                setCards={setCards}
-            />
-            <button onClick={sortByInitiative} className="button sort-button">
-                Sort by Initiative
-            </button>
-            <DndContext
-                sensors={sensors}
-                collisionDetection={closestCorners}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                modifiers={[restrictToVerticalAxis]}
-            >
-                <Column
-                    cards={cards}
-                    updateCardText={updateCardText}
-                    updateCardValue={updateCardValue}
-                    updateCardMaxHp={updateCardMaxHp}
-                    updateCardInitiative={updateCardInitiative}
-                    deleteCard={deleteCard}
-                />
-            </DndContext>
+            <CardsContext.Provider value={{cards, updateCard, deleteCard, addCard}}>
+                <AddCardForm/>
+                <button onClick={sortByInitiative} className="button sort-button">
+                    Sort by Initiative
+                </button>
+
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCorners}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    modifiers={[restrictToVerticalAxis]}
+                >
+
+                    <Column/>
+                </DndContext>
+            </CardsContext.Provider>
+
         </div>
     );
 };

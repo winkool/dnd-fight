@@ -1,44 +1,19 @@
 import React from 'react';
-import Card from '../../Card';
+import Card from '../Card/Card';
 import './Column.css';
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {CardProps} from "../../CardProps";
+import {CardType, useCards} from "../../CardsContext";
 
-interface DragAndDropContainerProps {
-    cards: CardProps[];
-    updateCardText: (id: number, newText: string) => void;
-    updateCardValue: (id: number, newValue: string) => void;
-    updateCardMaxHp: (id: number, newMaxHp: string) => void;
-    updateCardInitiative: (id: number, newInitiative: string) => void;
-    deleteCard: (id: number) => void;
-}
 
-const Column: React.FC<DragAndDropContainerProps> = (
-    {
-        cards,
-        updateCardText,
-        updateCardValue,
-        updateCardMaxHp,
-        updateCardInitiative,
-        deleteCard
-    }) => {
+
+const Column: React.FC = () => {
+    const {cards} = useCards();
+
     return (
         <div className="column">
             <SortableContext items={cards} strategy={verticalListSortingStrategy}>
-                {cards.map((card: CardProps) => (
-                    <Card
-                        key={card.id}
-                        id={card.id}
-                        text={card.text}
-                        max_hp={card.max_hp}
-                        value={card.value}
-                        initiative={card.initiative}
-                        updateCardText={updateCardText}
-                        updateCardValue={updateCardValue}
-                        updateCardMaxHp={updateCardMaxHp}
-                        updateCardInitiative={updateCardInitiative}
-                        deleteCard={deleteCard}
-                    />
+                {cards.map((card: CardType) => (
+                    <Card key={card.id} card={card}/>
                 ))}
             </SortableContext>
         </div>
