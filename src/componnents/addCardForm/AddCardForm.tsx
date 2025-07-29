@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import './AddCardForm.css';
-import {useCards} from "../../CardsContext";
+import {useCards} from "../../context/CardsContext";
 
 interface DragAndDropContainerProps {
 }
