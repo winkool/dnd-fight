@@ -1,19 +1,16 @@
 // CardsProvider.tsx
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {CardType, CardsContext} from "../context/CardsContext";
 
 interface CardsProviderProps {
     children: React.ReactNode;
 }
 
-const initialCards: CardType[] = [
-    { id: 1, text: 'Игрок 1', max_hp: 100, value: 100, initiative: 0 },
-];
 
-export const CardsProvider: React.FC<CardsProviderProps> = ({ children }) => {
+export const CardsProvider: React.FC<CardsProviderProps> = ({children}) => {
     const [cards, setCards] = useState<CardType[]>(() => {
         const saved = localStorage.getItem('cards');
-        return saved ? JSON.parse(saved) : initialCards;
+        return saved ? JSON.parse(saved) : [];
     });
 
     useEffect(() => {
@@ -24,7 +21,7 @@ export const CardsProvider: React.FC<CardsProviderProps> = ({ children }) => {
 
     const updateCard = (id: number, updatedFields: Partial<CardType>) => {
         setCards(prev =>
-            prev.map(card => (card.id === id ? { ...card, ...updatedFields } : card))
+            prev.map(card => (card.id === id ? {...card, ...updatedFields} : card))
         );
     };
 
@@ -33,7 +30,7 @@ export const CardsProvider: React.FC<CardsProviderProps> = ({ children }) => {
     };
 
     return (
-        <CardsContext.Provider value={{ cards, setCards, updateCard, deleteCard, addCard }}>
+        <CardsContext.Provider value={{cards, setCards, updateCard, deleteCard, addCard}}>
             {children}
         </CardsContext.Provider>
     );
