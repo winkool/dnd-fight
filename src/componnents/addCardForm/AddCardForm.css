@@ -59,6 +59,7 @@
 .card-button:hover {
     background-color: #a97b50;
 }
+.kd-container,
 .hp-container,
 .initiative-container {
     display: flex;

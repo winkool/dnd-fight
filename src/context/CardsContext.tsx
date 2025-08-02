@@ -5,6 +5,7 @@ export interface CardType {
     text: string;
     max_hp: number;
     value: number;
+    kd: number;
     initiative: number;
 }
 
@@ -14,6 +15,7 @@ interface CardsContextType {
     updateCard: (id: number, updatedFields: Partial<CardType>) => void;
     deleteCard: (id: number) => void;
     addCard: (newCard: CardType) => void;
+    sortCardsByInitiativeAsc: () => void;
 }
 
 export const CardsContext = createContext<CardsContextType>({} as CardsContextType);

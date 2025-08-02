@@ -1,6 +1,6 @@
 // CardsProvider.tsx
-import React, {useState, useEffect} from 'react';
-import {CardType, CardsContext} from "../context/CardsContext";
+import React, {useEffect, useState} from 'react';
+import {CardsContext, CardType} from "../context/CardsContext";
 
 interface CardsProviderProps {
     children: React.ReactNode;
@@ -28,9 +28,13 @@ export const CardsProvider: React.FC<CardsProviderProps> = ({children}) => {
     const deleteCard = (id: number) => {
         setCards(prev => prev.filter(card => card.id !== id));
     };
-
+    const sortCardsByInitiativeAsc = () => {
+        setCards((prevCards) => {
+            return [...prevCards].sort((a, b) => a.initiative - b.initiative);
+        });
+    };
     return (
-        <CardsContext.Provider value={{cards, setCards, updateCard, deleteCard, addCard}}>
+        <CardsContext.Provider value={{cards, setCards, updateCard, deleteCard, addCard, sortCardsByInitiativeAsc}}>
             {children}
         </CardsContext.Provider>
     );

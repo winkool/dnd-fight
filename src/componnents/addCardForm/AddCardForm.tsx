@@ -9,6 +9,7 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = () => {
     const [newCardText, setNewCardText] = useState('');
     const [newCardMaxHp, setNewCardMaxHp] = useState(100);
     const [newCardInitiative, setNewCardInitiative] = useState(0);
+    const [newCardKD, setNewCardKD] = useState(0);
 
     const {addCard} = useCards();
     const handleAddCard = (e: React.FormEvent) => {
@@ -19,11 +20,13 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = () => {
             text: newCardText,
             max_hp: newCardMaxHp,
             value: newCardMaxHp,
+            kd: newCardKD,
             initiative: newCardInitiative,
         });
         setNewCardText('');
         setNewCardMaxHp(100);
         setNewCardInitiative(0);
+        setNewCardKD(0);
     };
 
     const createHandleNumChange = (setValue: React.Dispatch<React.SetStateAction<number>>) => {
@@ -37,6 +40,7 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = () => {
 
 // Usage
     const handleInitiativeChange = createHandleNumChange(setNewCardInitiative);
+    const handleKdChange = createHandleNumChange(setNewCardKD);
     const handleMaxHpChange = createHandleNumChange(setNewCardMaxHp);
     return (
         <div className="add-card-form-container">
@@ -60,7 +64,17 @@ const AddCardForm: React.FC<DragAndDropContainerProps> = () => {
                         className="card-input input-numeric"
                     />
                 </div>
-
+                <div className="initiative-container">
+                    <label htmlFor="initiative" className="card-label">КД</label>
+                    <input
+                        type="number"
+                        min={0}
+                        placeholder="KD"
+                        value={newCardKD}
+                        onChange={handleKdChange}
+                        className="card-input input-numeric"
+                    />
+                </div>
                 <div className="hp-container">
                     <label htmlFor="max_hp" className="card-label">Максимальное здоровье</label>
                     <input

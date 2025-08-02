@@ -9,6 +9,7 @@ const Card: React.FC<CardType> = ({
                                       text,
                                       max_hp,
                                       value,
+                                      kd,
                                       initiative,
                                   }) => {
     const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
@@ -31,6 +32,9 @@ const Card: React.FC<CardType> = ({
     const handleCardMaxHpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateCard(id, {max_hp: Number(e.target.value)});
     }
+    const handleCardKD = (e: React.ChangeEvent<HTMLInputElement>) => {
+        updateCard(id, {kd: Number(e.target.value)});
+    }
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}
@@ -51,6 +55,16 @@ const Card: React.FC<CardType> = ({
                             min={-999}
                             value={initiative}
                             onChange={handleInitiativeChange}
+                            className="card-input input-numeric"
+                        />
+                    </div>
+                    <div className="kd-container">
+                        <label className={'card-label'}>КД</label>
+                        <input
+                            type="number"
+                            min={-999}
+                            value={kd}
+                            onChange={handleCardKD}
                             className="card-input input-numeric"
                         />
                     </div>
